@@ -33,9 +33,10 @@ class _RiveAssetState extends State<RiveAsset> {
         if (_disposed) {
           return;
         }
-        final file = RiveFile();
 
-        if (file.import(data)) {
+        try {
+          final file = RiveFile.import(data);
+
           final artboard = file.mainArtboard;
           _controller =
               SimpleAnimation(artboard.animations[widget.animationIndex].name);
@@ -44,6 +45,9 @@ class _RiveAssetState extends State<RiveAsset> {
             _riveArtboard = artboard;
             _controller.isActive = true;
           });
+        } catch (e) {
+          print('==== ERROR ====');
+          print(e);
         }
       },
     );

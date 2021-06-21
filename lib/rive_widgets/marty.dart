@@ -14,7 +14,7 @@ class Marty extends RiveAsset {
           key: key,
           asset: isBackgroundTransparent
               ? 'assets/marty_transparent.riv'
-              : 'assets/marty_v6.riv',
+              : 'assets/marty.riv',
           //animationIndex: index % 2,
           animationIndex: Random().nextInt(2),
         );
