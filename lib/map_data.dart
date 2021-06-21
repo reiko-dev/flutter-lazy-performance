@@ -340,7 +340,6 @@ class Location {
 
   Location get parent {
     final LayerType parentLayerType = layers[layerType]!.parent!;
-    assert(parentLayerType != null);
     return Location(
       row: (row / Layer.layerScale).floor(),
       column: (column / Layer.layerScale).floor(),

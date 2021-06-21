@@ -167,7 +167,6 @@ class _MapGridState extends State<_MapGrid> {
         _mapData.getLowestTileDataAtScreenOffset(widget.viewport.center);
 
     while (center.location.layerType != parentLayerType) {
-      assert(center.location.layerType != null);
       center = center.parent!;
     }
     _updateVisibleTileDatas(parentLayerType, center);
@@ -220,7 +219,7 @@ class _MapGridState extends State<_MapGrid> {
 }
 
 // Render all of the children tiles of the given parent tile.
-class _ParentMapTile extends StatelessWidget {
+class _ParentMapTile extends StatefulWidget {
   _ParentMapTile({
     Key? key,
     // Render all the children tiles of this given tile.
@@ -231,32 +230,42 @@ class _ParentMapTile extends StatelessWidget {
   final TileData tileData;
   final Rect viewport;
 
-  // The visibility of child tiles.
+  @override
+  State<_ParentMapTile> createState() => _ParentMapTileState();
+}
+
+class _ParentMapTileState extends State<_ParentMapTile> {
   int? _firstRow;
+
   int? _firstColumn;
+
   int? _firstVisibleColumn;
+
   int? _firstVisibleRow;
+
   int? _lastVisibleColumn;
+
   int? _lastVisibleRow;
+
   void _calculateVisibility() {
     // Only calculate this once. Also, not needed at all for local.
     if (_firstVisibleRow != null ||
-        tileData.location.layerType == LayerType.local) {
+        widget.tileData.location.layerType == LayerType.local) {
       return;
     }
 
-    final int layerExponent = layers[tileData.location.layerType]!.level;
+    final int layerExponent = layers[widget.tileData.location.layerType]!.level;
     final int childLayerScale = pow(10, layerExponent - 1).toInt();
-    _firstRow = tileData.location.row * Layer.layerScale;
-    _firstColumn = tileData.location.column * Layer.layerScale;
+    _firstRow = widget.tileData.location.row * Layer.layerScale;
+    _firstColumn = widget.tileData.location.column * Layer.layerScale;
     _firstVisibleRow =
-        (viewport.top / (cellSize.height * childLayerScale)).floor();
+        (widget.viewport.top / (cellSize.height * childLayerScale)).floor();
     _firstVisibleColumn =
-        (viewport.left / (cellSize.width * childLayerScale)).floor();
+        (widget.viewport.left / (cellSize.width * childLayerScale)).floor();
     _lastVisibleRow =
-        (viewport.bottom / (cellSize.height * childLayerScale)).floor();
+        (widget.viewport.bottom / (cellSize.height * childLayerScale)).floor();
     _lastVisibleColumn =
-        (viewport.right / (cellSize.width * childLayerScale)).floor();
+        (widget.viewport.right / (cellSize.width * childLayerScale)).floor();
   }
 
   bool _isCellVisible(int row, int column) {
@@ -272,11 +281,11 @@ class _ParentMapTile extends StatelessWidget {
     _calculateVisibility();
 
     // Local tiles have no children. Just render one big _MapTile.
-    if (tileData.location.layerType == LayerType.local) {
-      return _MapTile(tileData: tileData);
+    if (widget.tileData.location.layerType == LayerType.local) {
+      return _MapTile(tileData: widget.tileData);
     }
 
-    final Layer parentLayer = layers[tileData.location.layerType]!;
+    final Layer parentLayer = layers[widget.tileData.location.layerType]!;
     final Size size = layers[parentLayer.child]!.size;
 
     return Column(
@@ -289,8 +298,10 @@ class _ParentMapTile extends StatelessWidget {
                   column++)
                 _isCellVisible(row, column)
                     ? _MapTile(
-                        tileData: TileData.getByRowColumn(tileData.children,
-                            row % Layer.layerScale, column % Layer.layerScale))
+                        tileData: TileData.getByRowColumn(
+                            widget.tileData.children,
+                            row % Layer.layerScale,
+                            column % Layer.layerScale))
                     : SizedBox(width: size.width, height: size.height),
             ],
           ),
@@ -328,7 +339,6 @@ class _MapTile extends StatelessWidget {
       case TerrainType.ocean:
         return Colors.blue;
     }
-    throw Exception('ERROR WHEN GETTING GOLOR');
   }
 
   Widget? get _aLocation {
@@ -439,37 +449,37 @@ class _MapTile extends StatelessWidget {
             ),
           ),
           for (Location location in tileData.aLocations)
-            if (location != null)
-              Positioned(
-                left: location.column *
-                    cellSize.width /
-                    Layer.layerScale *
-                    layerScale,
-                top: location.row *
-                    cellSize.height /
-                    Layer.layerScale *
-                    layerScale,
-                child: SizedBox(
-                  width: 20.0 * layerScale,
-                  height: 20.0 * layerScale,
-                  child: _aLocation,
-                ),
+            Positioned(
+              left: location.column *
+                  cellSize.width /
+                  Layer.layerScale *
+                  layerScale,
+              top: location.row *
+                  cellSize.height /
+                  Layer.layerScale *
+                  layerScale,
+              child: SizedBox(
+                width: 20.0 * layerScale,
+                height: 20.0 * layerScale,
+                child: _aLocation,
               ),
-          for (Location location in tileData.bLocations)
-            if (location != null)
-              Positioned(
-                /*
+            ),
+          ...List.generate(
+            tileData.bLocations.length,
+            (index) => Positioned(
+              /*
                 left: location.column * cellSize.width / Layer.layerScale * layerScale,
                 top: location.row * cellSize.height / Layer.layerScale * layerScale,
                 */
-                left: 25.0 * layerScale,
-                top: 25.0 * layerScale,
-                child: SizedBox(
-                  width: 50.0 * layerScale,
-                  height: 50.0 * layerScale,
-                  child: _bLocation,
-                ),
+              left: 25.0 * layerScale,
+              top: 25.0 * layerScale,
+              child: SizedBox(
+                width: 50.0 * layerScale,
+                height: 50.0 * layerScale,
+                child: _bLocation,
               ),
+            ),
+          ),
         ],
       ),
     );
