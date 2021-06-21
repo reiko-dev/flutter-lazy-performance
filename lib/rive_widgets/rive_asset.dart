@@ -6,8 +6,8 @@ import 'package:flutter/widgets.dart';
 
 class RiveAsset extends StatefulWidget {
   const RiveAsset({
-    Key key,
-    @required this.asset,
+    Key? key,
+    required this.asset,
     this.animationIndex = 0,
   }) : super(key: key);
 
@@ -19,8 +19,8 @@ class RiveAsset extends StatefulWidget {
 }
 
 class _RiveAssetState extends State<RiveAsset> {
-  Artboard _riveArtboard;
-  RiveAnimationController _controller;
+  Artboard? _riveArtboard;
+  late RiveAnimationController _controller;
   bool _disposed = false;
 
   @override
@@ -63,6 +63,6 @@ class _RiveAssetState extends State<RiveAsset> {
   Widget build(BuildContext context) {
     return _riveArtboard == null
         ? const SizedBox()
-        : Rive(artboard: _riveArtboard);
+        : Rive(artboard: _riveArtboard!);
   }
 }

@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatelessWidget {
-  MyHomePage({Key key}) : super(key: key);
+  MyHomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +36,7 @@ class MyHomePage extends StatelessWidget {
       ),
       body: ListView(
         children: <Widget>[
-          MyListItem(
+          const MyListItem(
             route: '/procedural-generation',
             title: 'InteractiveViewer.builder Procedural Generation Example',
             subtitle: 'Generate the content to build.',
@@ -48,12 +48,11 @@ class MyHomePage extends StatelessWidget {
 }
 
 class MyListItem extends StatelessWidget {
-  MyListItem({
-    Key key,
-    @required this.route,
-    @required this.subtitle,
-    @required this.title,
-  }) : super(key: key);
+  const MyListItem({
+    required this.route,
+    required this.subtitle,
+    required this.title,
+  });
 
   final String route;
   final String subtitle;
