@@ -3,12 +3,11 @@ import 'package:flutter/widgets.dart';
 
 import 'rive_asset.dart';
 
-class Cloud extends RiveAsset {
-  const Cloud({
+class UFO extends RiveAsset {
+  const UFO({
     Key key,
   }) : super(
-    key: key,
-    asset: 'assets/cloud.riv',
-  );
+          key: key,
+          asset: 'assets/ufo.riv',
+        );
 }
-

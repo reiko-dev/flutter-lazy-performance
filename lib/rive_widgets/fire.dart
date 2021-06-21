@@ -3,11 +3,11 @@ import 'package:flutter/widgets.dart';
 
 import 'rive_asset.dart';
 
-class Grass extends RiveAsset {
-  const Grass({
+class Fire extends RiveAsset {
+  const Fire({
     Key key,
   }) : super(
-    key: key,
-    asset: 'assets/grass.riv',
-  );
+          key: key,
+          asset: 'assets/fire.riv',
+        );
 }

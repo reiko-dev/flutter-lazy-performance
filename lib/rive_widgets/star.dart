@@ -3,11 +3,11 @@ import 'package:flutter/widgets.dart';
 
 import 'rive_asset.dart';
 
-class Planet extends RiveAsset {
-  const Planet({
+class Star extends RiveAsset {
+  const Star({
     Key key,
   }) : super(
-    key: key,
-    asset: 'assets/planet.riv',
-  );
+          key: key,
+          asset: 'assets/star.riv',
+        );
 }
