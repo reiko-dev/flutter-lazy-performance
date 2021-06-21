@@ -1,9 +1,6 @@
 import 'dart:math' show Random;
 
-import 'package:rive/rive.dart';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
 import 'rive_asset.dart';
